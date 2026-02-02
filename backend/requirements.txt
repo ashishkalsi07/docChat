@@ -4,6 +4,7 @@ uvicorn==0.40.0
 
 # Database
 asyncpg==0.31.0
+openai
 
 # File Processing
 PyPDF2==3.0.1
