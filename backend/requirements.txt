@@ -4,7 +4,7 @@ uvicorn[standard]
 
 # Database & ORM
 asyncpg
-databases[postgresql]
+
 
 
 # File Processing
@@ -16,13 +16,9 @@ aiofiles
 sentence-transformers
 
 
-# Vector Database
-pgvector
-
-
 # Authentication & Security
 python-jose[cryptography]
-passlib[bcrypt]
+
 python-dotenv
 
 # Supabase Integration
