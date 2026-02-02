@@ -1,0 +1,45 @@
+# Web Framework
+fastapi[all]
+uvicorn[standard]
+
+# Database & ORM
+asyncpg
+databases[postgresql]
+psycopg2-binary
+
+# File Processing
+PyPDF2
+python-multipart
+aiofiles
+
+# AI & ML
+sentence-transformers
+transformers
+torch
+accelerate
+
+# LangGraph Framework
+langgraph
+langchain
+langchain-community
+langchain-core
+
+# Vector Database
+pgvector
+
+# Background Jobs
+celery
+redis
+
+# Authentication & Security
+python-jose[cryptography]
+passlib[bcrypt]
+python-dotenv
+
+# Supabase Integration
+supabase
+
+# Utilities
+pydantic
+httpx
+numpy

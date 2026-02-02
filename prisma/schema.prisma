@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(uuid())
+  email        String        @unique
+  supabaseId   String?       @unique
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  chatSessions ChatSession[]
+  documents    Document[]
+
+  @@map("users")
+}
+
+model Document {
+  id           String              @id @default(uuid())
+  userId       String
+  filename     String
+  originalName String
+  mimeType     String
+  size         Int
+  status       DocumentStatus      @default(PROCESSING)
+  uploadedAt   DateTime            @default(now())
+  processedAt  DateTime?
+  errorMessage String?
+  embeddings   DocumentEmbedding[]
+  user         User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
+  @@map("documents")
+}
+
+model DocumentEmbedding {
+  id         Int      @id @default(autoincrement())
+  documentId String
+  chunkId    String   @unique
+  chunkIndex Int
+  content    String
+  embedding  Float[]
+  pageNumber Int?
+  createdAt  DateTime @default(now())
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@index([documentId])
+  @@index([chunkId])
+  @@map("document_embeddings")
+}
+
+model ChatSession {
+  id          String        @id @default(uuid())
+  userId      String
+  documentIds String[]
+  title       String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  messages    ChatMessage[]
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, updatedAt])
+  @@map("chat_sessions")
+}
+
+model ChatMessage {
+  id         String      @id @default(uuid())
+  sessionId  String
+  userId     String
+  query      String
+  response   String
+  chunksUsed String?
+  createdAt  DateTime    @default(now())
+  session    ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId, createdAt])
+  @@map("chat_messages")
+}
+
+enum DocumentStatus {
+  PROCESSING
+  COMPLETED
+  FAILED
+
+  @@map("document_status")
+}

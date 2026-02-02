@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install @supabase/ssr)",
+      "Bash(npm install:*)",
+      "Bash(dir:*)",
+      "Bash(npx prisma generate:*)",
+      "Bash(npx prisma migrate dev:*)",
+      "Bash(npx prisma:*)",
+      "Bash(python:*)",
+      "Bash(set DATABASE_URL=postgresql://postgres:v2yB9X8z$i*7QaQ@db.uiqzxgxvbtwllmaipwek.supabase.co:5432/postgres)",
+      "Bash(pip install:*)",
+      "Bash(pip show:*)",
+      "Bash(redis-server:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(docker:*)",
+      "Bash(choco:*)",
+      "Bash(del:*)",
+      "Bash(tree:*)",
+      "Bash(find:*)",
+      "Bash(set PRISMA_USER_CONSENT_FOR_DANGEROUS_AI_ACTION=yes)",
+      "Bash(ls:*)",
+      "Bash(npm run build)"
+    ]
+  }
+}
