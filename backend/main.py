@@ -78,6 +78,7 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",
         "http://127.0.0.1:3000",
+        "https://docchat-production-171b.up.railway.app"
         # Add your production frontend URL here
     ],
     allow_credentials=True,
