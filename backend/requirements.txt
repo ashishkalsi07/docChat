@@ -1,29 +1,26 @@
 # Web Framework
-fastapi[all]
-uvicorn[standard]
+fastapi==0.128.0
+uvicorn==0.40.0
 
-# Database & ORM
-asyncpg
-
-
+# Database
+asyncpg==0.31.0
 
 # File Processing
-PyPDF2
-python-multipart
-aiofiles
+PyPDF2==3.0.1
+python-multipart==0.0.22
+aiofiles==25.1.0
 
-# AI & ML
-sentence-transformers
+# AI & ML (CPU ONLY)
+torch==2.1.0+cpu --index-url https://download.pytorch.org/whl/cpu
+sentence-transformers==2.2.2
 
+# Auth & Security
+python-jose==3.5.0
+python-dotenv==1.0.1
 
-# Authentication & Security
-python-jose[cryptography]
-
-python-dotenv
-
-# Supabase Integration
-supabase
+# Supabase
+supabase==2.27.2
 
 # Utilities
-pydantic
-httpx
+pydantic==2.12.5
+httpx==0.28.1
