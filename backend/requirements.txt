@@ -11,8 +11,8 @@ python-multipart==0.0.22
 aiofiles==25.1.0
 
 # AI & ML (CPU ONLY)
-torch==2.1.0+cpu --index-url https://download.pytorch.org/whl/cpu
-sentence-transformers==2.2.2
+torch==2.10.0+cpu --index-url https://download.pytorch.org/whl/cpu
+sentence-transformers==5.2.2
 
 # Auth & Security
 python-jose==3.5.0
