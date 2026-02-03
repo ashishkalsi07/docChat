@@ -33,9 +33,9 @@ class Settings(BaseSettings):
     # redis_url: str = "redis://localhost:6379/0"
 
     # AI Models
-    embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
-    llm_model: str = "microsoft/DialoGPT-medium"  # Can be changed to Llama/Mistral later
-    max_tokens: int = 4096
+    embedding_model: str = "sentence-transformers/paraphrase-MiniLM-L3-v2"
+    llm_model: str = "google/flan-t5-small"  # Can be changed to Llama/Mistral later
+    max_tokens: int = 512
 
     # Vector Search
     similarity_threshold: float = 0.01  # Lowered for TF-IDF embeddings which have lower similarity scores
