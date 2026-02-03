@@ -42,8 +42,8 @@ const LandingPage = () => {
       <header className="w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 truncate">
-            <span className="hidden sm:inline">AI Knowledge Assistant</span>
-            <span className="sm:hidden">AI Assistant</span>
+            <span className="hidden sm:inline">docChat</span>
+            <span className="sm:hidden">docChat</span>
           </div>
           <nav className="flex items-center space-x-2 sm:space-x-4">
             <Link
