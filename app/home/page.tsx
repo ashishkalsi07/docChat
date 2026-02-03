@@ -930,6 +930,71 @@ const HomePage = () => {
           </div>
         </div>
 
+        {/* Mobile Status Banner - Shows loading states for small screens */}
+        {(isUploading || documentStatus === 'Processing document...' || error) && (
+          <div className="md:hidden bg-white border-b border-gray-200 px-4 py-3">
+            {/* Upload Progress */}
+            {isUploading && (
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center space-x-2">
+                    <div className="animate-spin w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full"></div>
+                    <span className="text-sm font-medium text-blue-800">Uploading...</span>
+                  </div>
+                  <span className="text-xs text-blue-600">{uploadProgress}%</span>
+                </div>
+                <div className="w-full bg-blue-100 rounded-full h-2">
+                  <div
+                    className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                    style={{ width: `${uploadProgress}%` }}
+                  ></div>
+                </div>
+                <p className="text-xs text-blue-700 mt-1 truncate">
+                  {currentDocument ? currentDocument.name : 'Document'}
+                </p>
+              </div>
+            )}
+
+            {/* Document Processing */}
+            {!isUploading && documentStatus === 'Processing document...' && (
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-3">
+                <div className="flex items-center space-x-2">
+                  <div className="animate-spin w-4 h-4 border-2 border-yellow-600 border-t-transparent rounded-full"></div>
+                  <div className="flex-1">
+                    <span className="text-sm font-medium text-yellow-800">Processing Document</span>
+                    <p className="text-xs text-yellow-700">This may take a moment...</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Error States */}
+            {error && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-start space-x-2">
+                    <svg className="w-4 h-4 text-red-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <div className="flex-1">
+                      <span className="text-sm font-medium text-red-800">Error</span>
+                      <p className="text-xs text-red-700 mt-1">{error}</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setError('')}
+                    className="text-red-400 hover:text-red-600 ml-2"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Messages Area */}
         <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
           {!currentChatId && currentDocument?.status === 'COMPLETED' ? (
@@ -957,6 +1022,43 @@ const HomePage = () => {
             // Messages Display
             <div className="flex-1 overflow-y-auto p-3 md:p-4">
               <div className="space-y-3 md:space-y-4">
+                {/* Process Status for Desktop (hidden on mobile) */}
+                {(isUploading || documentStatus === 'Processing document...' || error) && (
+                  <div className="hidden md:block">
+                    {/* Upload Progress */}
+                    {isUploading && (
+                      <div className="bg-blue-50 border border-blue-200 text-blue-800 px-4 py-3 rounded-lg text-sm mb-3">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center space-x-2">
+                            <div className="animate-spin w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full"></div>
+                            <span className="font-medium">Uploading document...</span>
+                          </div>
+                          <span className="text-blue-600">{uploadProgress}%</span>
+                        </div>
+                        <div className="w-full bg-blue-100 rounded-full h-2">
+                          <div
+                            className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                            style={{ width: `${uploadProgress}%` }}
+                          ></div>
+                        </div>
+                        <p className="text-xs text-blue-700 mt-1">
+                          {currentDocument ? currentDocument.name : 'Document'}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Document Processing */}
+                    {!isUploading && documentStatus === 'Processing document...' && (
+                      <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 px-4 py-3 rounded-lg text-sm mb-3">
+                        <div className="flex items-center space-x-2">
+                          <div className="animate-spin w-4 h-4 border-2 border-yellow-600 border-t-transparent rounded-full"></div>
+                          <span>Processing document... This may take a moment.</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 {/* Error Message */}
                 {error && (
                   <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
@@ -1040,38 +1142,126 @@ const HomePage = () => {
             // No Document State
             <div className="flex-1 flex items-center justify-center">
               <div className="text-center max-w-sm md:max-w-md px-4">
-                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">Upload a Document</h3>
-                <p className="text-gray-600 mb-4">
-                  Upload a PDF document to start having intelligent conversations with your content. Only one document is allowed per user.
-                </p>
-                <div className="">
-                  <input
-                    type="file"
-                    className="hidden"
-                    id="main-file-input"
-                    accept=".pdf"
-                    onChange={handleFileUpload}
-                    disabled={isUploading}
-                  />
-                  <label
-                    htmlFor="main-file-input"
-                    className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
-                  >
-                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                    </svg>
-                    Choose PDF File
-                  </label>
-                </div>
+                {isUploading ? (
+                  // Upload Progress State
+                  <div>
+                    <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <div className="animate-spin w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full"></div>
+                    </div>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">Uploading Document</h3>
+                    <p className="text-gray-600 mb-4">
+                      Please wait while we upload and process your document...
+                    </p>
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-medium text-blue-800">Progress</span>
+                        <span className="text-sm text-blue-600">{uploadProgress}%</span>
+                      </div>
+                      <div className="w-full bg-blue-100 rounded-full h-3">
+                        <div
+                          className="bg-blue-600 h-3 rounded-full transition-all duration-300"
+                          style={{ width: `${uploadProgress}%` }}
+                        ></div>
+                      </div>
+                      {currentDocument && (
+                        <p className="text-xs text-blue-700 mt-2 truncate">
+                          {currentDocument.name}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ) : documentStatus === 'Processing document...' ? (
+                  // Processing State
+                  <div>
+                    <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <div className="animate-spin w-8 h-8 border-2 border-yellow-600 border-t-transparent rounded-full"></div>
+                    </div>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">Processing Document</h3>
+                    <p className="text-gray-600 mb-4">
+                      Your document is being processed and will be ready shortly...
+                    </p>
+                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                      <div className="flex items-center justify-center space-x-2">
+                        <div className="animate-spin w-4 h-4 border-2 border-yellow-600 border-t-transparent rounded-full"></div>
+                        <span className="text-sm text-yellow-800">Analyzing content...</span>
+                      </div>
+                      {currentDocument && (
+                        <p className="text-xs text-yellow-700 mt-2 text-center truncate">
+                          {currentDocument.name}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  // Default Upload State
+                  <div>
+                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-2">Upload a Document</h3>
+                    <p className="text-gray-600 mb-4">
+                      Upload a PDF document to start having intelligent conversations with your content. Only one document is allowed per user.
+                    </p>
+                    <div className="">
+                      <input
+                        type="file"
+                        className="hidden"
+                        id="main-file-input"
+                        accept=".pdf"
+                        onChange={handleFileUpload}
+                        disabled={isUploading}
+                      />
+                      <label
+                        htmlFor="main-file-input"
+                        className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer disabled:opacity-50"
+                      >
+                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                        Choose PDF File
+                      </label>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           )}
         </div>
+
+        {/* Floating Status Indicator for Mobile - shows when processes are running */}
+        {currentChatId && messages.length > 0 && (isUploading || documentStatus === 'Processing document...') && (
+          <div className="md:hidden absolute bottom-20 left-4 right-4 z-10">
+            <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-3">
+              {isUploading ? (
+                <div className="flex items-center space-x-3">
+                  <div className="animate-spin w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full flex-shrink-0"></div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-blue-800">Uploading new document</p>
+                    <div className="flex items-center space-x-2 mt-1">
+                      <div className="flex-1 bg-blue-100 rounded-full h-1.5">
+                        <div
+                          className="bg-blue-600 h-1.5 rounded-full transition-all duration-300"
+                          style={{ width: `${uploadProgress}%` }}
+                        ></div>
+                      </div>
+                      <span className="text-xs text-blue-600 flex-shrink-0">{uploadProgress}%</span>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center space-x-3">
+                  <div className="animate-spin w-4 h-4 border-2 border-yellow-600 border-t-transparent rounded-full flex-shrink-0"></div>
+                  <div>
+                    <p className="text-sm font-medium text-yellow-800">Processing document</p>
+                    <p className="text-xs text-yellow-600">Almost ready...</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Input Area */}
         {currentChatId && (
